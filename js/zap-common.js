@@ -45,9 +45,10 @@ function getYouTubeVideoDescription(videoID, youTubeDataApiKey, onSuccess, onFai
  * @returns {{format: string, id: string}} - Object containing format and YouTube ID.
  */
 function parseYoutubeVideoID(uri) {
+    // Assume YouTube video ID string
     var videoInfo = {
-        format: "other",
-        id: null
+        format: "video ID",
+        id: uri
     };
     var shortUrlDomain = "youtu.be";
     var longUrlDomain = "youtube.com";
@@ -56,20 +57,14 @@ function parseYoutubeVideoID(uri) {
     var domain = url.domain();
 
     if (uri && uri.length > 0) {
+        videoInfo.format = domain;
         // youtube.com format
         if (domain === longUrlDomain) {
-            videoInfo.format = longUrlDomain;
             videoInfo.id = url.search(true).v;
         }
         // youtu.be format
         else if (domain === shortUrlDomain) {
-            videoInfo.format = shortUrlDomain;
             videoInfo.id = url.path().slice(1);
-        }
-        // Assume YouTube video ID string
-        else {
-            videoInfo.format = "video ID";
-            videoInfo.id = uri;
         }
 
         var slashPos = videoInfo.id.indexOf("/");
